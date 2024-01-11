@@ -1,0 +1,29 @@
+name: Tag on App Version Change
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag_on_version_change:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Get App Version Name
+        id: app_version_name
+        run: |
+          echo "::set-output name=version::$(grep -oP 'versionName "[0-9.]*"' app/build.gradle | cut -d' ' -f2 | tr -d '\"')"
+
+      - name: Check for App Version Change
+        id: check_version_change
+        run: echo "::set-output name=changed::$(git diff --name-only ${{ github.sha }}~1 ${{ github.sha }} | grep 'app/build.gradle')"
+
+      - name: Create Tag
+        if: steps.check_version_change.outputs.changed == 'app/build.gradle'
+        run: |
+          git tag v${{ steps.app_version_name.outputs.version }}
+          git push origin --tags
