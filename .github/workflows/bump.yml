@@ -40,4 +40,4 @@ jobs:
       run: |
         echo "${{ steps.get_version.outputs.version }}" > previous_version.txt
         git tag -a v${{ steps.get_version.outputs.version }} -m "Release version ${{ steps.get_version.outputs.version }}"
-        git push origin --tags --quiet -u ${{ secrets.YOUR_PAT_SECRET_NAME }}
+        git push origin --tags --quiet -u ${{ secrets.BUMP_VERSION }}
