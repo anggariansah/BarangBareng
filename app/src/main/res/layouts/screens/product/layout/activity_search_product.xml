@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".screens.product.SearchProductActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/search_top_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#3B393A"
+            android:orientation="horizontal"
+            android:paddingVertical="@dimen/spacer_normal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_back_search_product"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:paddingHorizontal="@dimen/spacer_small"
+                android:src="@drawable/ic_arrow_back_black"
+                android:tint="@color/white" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_search_product"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacer_normal"
+                android:layout_weight="0.8"
+                android:background="@drawable/bg_edit_text_kitalulus_search"
+                android:cursorVisible="true"
+                android:drawableStart="@drawable/ic_baseline_search_24"
+                android:drawablePadding="@dimen/spacer_small"
+                android:drawableTint="#A6A4A4"
+                android:hint="@string/cari_barang"
+                android:imeOptions="actionSearch"
+                android:inputType="textPersonName"
+                android:paddingHorizontal="@dimen/spacer_medium"
+                android:paddingVertical="@dimen/spacer_l_small"
+                android:textSize="@dimen/text_small_body" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_product"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_top_container" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

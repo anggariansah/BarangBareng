@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">BarangBareng</string>
+    <string name="cari_barang">Cari Barang....</string>
+    <string name="elektronik">Elektronik</string>
+    <string name="alat_olahraga">Alat Olahraga</string>
+    <string name="pakaian">Pakaian</string>
+    <string name="alat_musik">Alat Musik</string>
+    <string name="outdor">Outdor</string>
+    <string name="terbaru">Terbaru</string>
+    <string name="rekomendasi">Rekomendasi</string>
+    <string name="alat_event">Alat Event</string>
+    <string name="label_whatsapp_not_installed">Whatsapp belum terinstal</string>
+</resources>
