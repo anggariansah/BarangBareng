@@ -1,29 +1,38 @@
-name: Tag on App Version Change
+name: Auto-tag on versionName change
 
 on:
   push:
     branches:
-      - main
+      - main  # Change this to your main branch
 
 jobs:
-  tag_on_version_change:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Get App Version Name
-        id: app_version_name
-        run: |
-          echo "::set-output name=version::$(grep -oP 'versionName "[0-9.]*"' app/build.gradle | cut -d' ' -f2 | tr -d '\"')"
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '11'
 
-      - name: Check for App Version Change
-        id: check_version_change
-        run: echo "::set-output name=changed::$(git diff --name-only ${{ github.sha }}~1 ${{ github.sha }} | grep 'app/build.gradle')"
+    - name: Build with Gradle
+      run: ./gradlew assembleRelease
 
-      - name: Create Tag
-        if: steps.check_version_change.outputs.changed == 'app/build.gradle'
-        run: |
-          git tag v${{ steps.app_version_name.outputs.version }}
-          git push origin --tags
+    - name: Get current versionName
+      id: get_version
+      run: echo "::set-output name=version::$(grep 'versionName' app/build.gradle | sed -n 's/.*versionName "\([^"]*\)".*/\1/p')"
+
+    - name: Compare current versionName with previous version
+      id: compare_versions
+      run: echo "::set-output name=tag_required::$(test '${{ steps.get_version.outputs.version }}' != '$(cat previous_version.txt)'; echo $?)"
+
+    - name: Tag repository
+      if: steps.compare_versions.outputs.tag_required == '0'
+      run: |
+        echo "${{ steps.get_version.outputs.version }}" > previous_version.txt
+        git tag -a v${{ steps.get_version.outputs.version }} -m "Release version ${{ steps.get_version.outputs.version }}"
+        git push origin --tags
