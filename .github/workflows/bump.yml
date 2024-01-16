@@ -44,6 +44,11 @@ jobs:
         git config user.name "anggariansah"
         git config credential.helper store
 
+     - name: Log in with PAT
+      run: |
+        git remote set-url origin https://${{ secrets.autotag }}@github.com/anggariansah/BarangBareng.git
+        git fetch --tags
+
     - name: Create Tag
       id: create_tag
       run: git tag ${{ steps.version.outputs.NEW_VERSION }}
