@@ -1,43 +1,22 @@
-name: Auto-tag on versionName change
-
+# example 1: on push to master
+name: Bump version
 on:
   push:
     branches:
-      - main  # Change this to your main branch
+      - master
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     steps:
-    - name: Set up Git
-      run: |
-        git config --global user.email "angga.riansah332@gmail.com"
-        git config --global user.name "anggariansah"
-        
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Java
-      uses: actions/setup-java@v2
+    - uses: actions/checkout@v3
       with:
-        distribution: 'adopt'
-        java-version: '11'
+        fetch-depth: '0'
 
-    - name: Build with Gradle
-      run: ./gradlew assembleRelease
-
-    - name: Get current versionName
-      id: get_version
-      run: echo "::set-output name=version::$(grep 'versionName' app/build.gradle | sed -n 's/.*versionName "\([^"]*\)".*/\1/p')"
-
-    - name: Compare current versionName with previous version
-      id: compare_versions
-      run: echo "::set-output name=tag_required::$(test '${{ steps.get_version.outputs.version }}' != '$(cat previous_version.txt)'; echo $?)"
-
-    - name: Tag repository
-      if: steps.compare_versions.outputs.tag_required == '0'
-      run: |
-        echo "${{ steps.get_version.outputs.version }}" > previous_version.txt
-        git tag -a v${{ steps.get_version.outputs.version }} -m "Release version ${{ steps.get_version.outputs.version }}"
-        git push origin --tags --quiet -u ${{ secrets.BUMP_VERSION }}
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
+        WITH_V: false
