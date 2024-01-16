@@ -38,6 +38,12 @@ jobs:
       id: version
       run: echo ::set-output name=NEW_VERSION::$(./gradlew -q printVersion)
 
+    - name: Set up Git with the PAT
+      run: |
+        git config user.email "angga.riansah332@gmail.com"
+        git config user.name "anggariansah"
+        git config credential.helper store
+
     - name: Create Tag
       id: create_tag
       run: git tag ${{ steps.version.outputs.NEW_VERSION }}
