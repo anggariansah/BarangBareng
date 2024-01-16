@@ -52,6 +52,13 @@ android {
     }
 }
 
+task printVersion {
+    doLast {
+        def version = android.defaultConfig.versionName
+        println version
+    }
+}
+
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
