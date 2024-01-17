@@ -1,22 +1,16 @@
-# example 1: on push to master
-name: Bump version
+name: 'Auto Create Tag'
 on:
   push:
     branches:
       - main
-
 jobs:
-  build:
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: write
+  tag:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
+      - uses: christophebedard/tag-version-commit@v1
         with:
-          fetch-depth: '0'
-
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
-          WITH_V: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version_regex: 'Release: ([0-9]+\.[0-9]+\.[0-9]+)'
+          check_entire_commit_message: true
+          version_tag_prefix: 'v'
