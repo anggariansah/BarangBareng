@@ -1,14 +1,3 @@
-#  fix this code have error like this
-#    Run git push origin
-#    git push origin
-#  shell: /usr/bin/bash -e {0}
-#  remote: Write access to repository not granted.
-#  fatal:
-#    unable to access 'https://github.com/anggariansah/BarangBareng.git/':
-#      The requested URL returned error: 403
-#  Error: Process completed with exit code 128.
-
-
 name: Autotag
 
 on:
