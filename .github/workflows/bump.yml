@@ -53,4 +53,4 @@ jobs:
         run: git tag ${{ steps.version.outputs.NEW_VERSION }}
 
       - name: Push Tag
-        run: git push origin refs/tags/${{ steps.create_tag.outputs.NEW_VERSION }}:refs/tags/${{ steps.create_tag.outputs.NEW_VERSION }}
+        run: git push origin ${{ steps.create_tag.outputs.NEW_VERSION }}
