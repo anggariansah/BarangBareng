@@ -1,32 +1,36 @@
+#  fix this code have error like this
+#    Run git push origin
+#    git push origin
+#  shell: /usr/bin/bash -e {0}
+#  remote: Write access to repository not granted.
+#  fatal:
+#    unable to access 'https://github.com/anggariansah/BarangBareng.git/':
+#      The requested URL returned error: 403
+#  Error: Process completed with exit code 128.
+
+
 name: Autotag
 
 on:
   push:
     branches:
       - main
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-      - name: Set up JDK
-        uses: actions/setup-java@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
         with:
-          distribution: 'adopt'
-          java-version: '11'
+          java-version: 11
       - name: Build with Gradle
         run: ./gradlew build
 
   tag:
     needs: build
     runs-on: ubuntu-latest
-
-#    permissions:
-#      issues: write
-#      pull-requests: write
-#      actions: write
 
     steps:
       - name: Checkout Repository
@@ -42,13 +46,12 @@ jobs:
 
       - name: Set up Git with PAT
         run: |
-          git config user.email "angga.riansah332@gmail.com"
-          git config user.name "anggariansah"
-          git config credential.helper store
+          git config --global user.email "angga.riansah332@gmail.com"
+          git config --global user.name "anggariansah"
 
       - name: Log in with the PAT
         run: |
-          git remote set-url origin https://${{ secrets.autotag }}@github.com/anggariansah/BarangBareng.git
+#          git remote set-url origin https://${{ secrets.autotag }}@github.com/anggariansah/BarangBareng.git
           git fetch --tags
 
       - name: Create Tag
@@ -56,4 +59,4 @@ jobs:
         run: git tag ${{ steps.version.outputs.NEW_VERSION }}
 
       - name: Push Tag
-        run: git push origin ${{ steps.create_tag.outputs.NEW_VERSION }}
+        run: git push origin refs/tags/${{ steps.create_tag.outputs.NEW_VERSION }}:refs/tags/${{ steps.create_tag.outputs.NEW_VERSION }}
