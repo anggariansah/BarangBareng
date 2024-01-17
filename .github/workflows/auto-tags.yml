@@ -2,7 +2,7 @@ name: 'Auto Create Tag'
 on:
   push:
     branches:
-      - main
+      - main 
 jobs:
   tag:
     runs-on: ubuntu-latest
