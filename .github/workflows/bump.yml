@@ -40,13 +40,12 @@ jobs:
 
       - name: Set up Git with PAT
         run: |
-          git config user.email "angga.riansah332@gmail.com"
-          git config user.name "Angga Riansah"
-          git config credential.helper store
+          git config --global user.email "angga.riansah332@gmail.com"
+          git config --global user.name "Angga Riansah"
+          git config --global credential.helper store
 
       - name: Log in with the PAT
         run: |
-          git remote set-url origin https://${{ secrets.autotag }}@github.com/anggariansah/BarangBareng.git
           git fetch --tags
 
       - name: Create Tag
