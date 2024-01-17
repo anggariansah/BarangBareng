@@ -35,9 +35,9 @@ jobs:
 
       - name: Set up Git with PAT
         run: |
-          git config --global user.email "angga.riansah332@gmail.com"
-          git config --global user.name "anggariansah"
-          git config --global credential.helper store  # You may remove this line
+          git config user.email "angga.riansah332@gmail.com"
+          git config user.name "anggariansah"
+          git config credential.helper store
 
       - name: Log in with the PAT
         run: |
